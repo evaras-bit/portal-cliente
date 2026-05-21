@@ -1571,15 +1571,8 @@
       });
   })();
 
-  // Clonar el logo del topbar al overlay de login
+  // Focus en el input de password al cargar
   document.addEventListener('DOMContentLoaded', function() {
-    const topbarLogo = document.querySelector('.mj-topbar-left img');
-    const loginContainer = document.getElementById('login-logo-container');
-    if (topbarLogo && loginContainer) {
-      const cloned = topbarLogo.cloneNode(true);
-      loginContainer.appendChild(cloned);
-    }
-    // Focus en el input de password
     const passInput = document.getElementById('passwordInput');
     if (passInput && document.body.classList.contains('locked')) {
       setTimeout(() => passInput.focus(), 100);

@@ -672,6 +672,32 @@
     border-radius: 50%;
     margin: 0 auto;
   }
+  /* Etiqueta de estado debajo del nombre de la partida */
+  .est-badge {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 1px 8px 1px 7px;
+    border-radius: 10px;
+    color: var(--teal);
+    background: rgba(28,60,68,0.10);
+    white-space: nowrap;
+  }
+  .est-badge::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    background: rgba(28,60,68,0.60);
+  }
+  .est-badge.success::before  { background: var(--success); }
+  .est-badge.warning::before  { background: var(--warning); }
+  .est-badge.milestone::before { background: var(--success); }
   .gantt-legend {
     display: flex;
     gap: 18px;
@@ -1892,18 +1918,28 @@
 
     var hdr2 = cols.map(function(c) { return '<th>' + c.s + '</th>'; }).join('');
 
+    // Color de la barra según el Estado de la partida (columna "Estado" en Notion)
+    function estadoCls(e) {
+      if (e === 'Terminado')   return 'success';   // verde
+      if (e === 'En progreso') return 'warning';   // naranja
+      return '';                                    // Programado → gris por defecto
+    }
+
     var tbody = '';
-    var seenCats = {};
     g.partidas.forEach(function(p) {
-      var isPhase = p.nombre === p.categoria || !seenCats[p.categoria];
-      if (p.categoria && !seenCats[p.categoria]) seenCats[p.categoria] = true;
       var rowCls = (p.nombre === p.categoria) ? 'phase-row' : 'sub-row';
       var activeSet = {};
       (p.semanas_activas || []).forEach(function(w) { activeSet[w] = true; });
+      // El bloque del mes de término toma el color del estado
+      var barCls = p.milestone ? 'milestone' : estadoCls(p.estado);
       var cells = cols.map(function(c) {
-        return activeSet[c.isoWeek] ? '<td><div class="gcell"></div></td>' : '<td></td>';
+        return activeSet[c.isoWeek] ? '<td><div class="gcell ' + barCls + '"></div></td>' : '<td></td>';
       }).join('');
-      tbody += '<tr class="' + rowCls + '"><td class="td-n"><div class="cell-text">' + p.nombre + '</div></td>' + cells + '</tr>\n';
+      var estLabel   = p.milestone ? 'Hito' : (p.estado || '—');
+      var estDotCls  = p.milestone ? 'milestone' : estadoCls(p.estado);
+      var nameCell = '<td class="td-n"><div class="cell-text">' + p.nombre + '</div>'
+                   + '<span class="est-badge ' + estDotCls + '">' + estLabel + '</span></td>';
+      tbody += '<tr class="' + rowCls + '">' + nameCell + cells + '</tr>\n';
     });
 
     return [
@@ -1927,7 +1963,13 @@
       '<div class="gantt-wrap"><table class="gtbl"><thead>',
         '<tr><th class="th-name" rowspan="2"><div class="cell-text">Partida</div></th>' + hdr1 + '</tr>',
         '<tr>' + hdr2 + '</tr>',
-      '</thead><tbody>' + tbody + '</tbody></table></div>'
+      '</thead><tbody>' + tbody + '</tbody></table></div>',
+      '<div class="gantt-legend">',
+        '<div class="gantt-legend-item"><span class="swatch" style="background:var(--success)"></span>Terminado</div>',
+        '<div class="gantt-legend-item"><span class="swatch" style="background:var(--warning)"></span>En progreso</div>',
+        '<div class="gantt-legend-item"><span class="swatch" style="background:rgba(28,60,68,0.65)"></span>Programado</div>',
+        '<div class="gantt-legend-item"><span class="swatch" style="background:var(--success);border-radius:50%"></span>Entrega / Hito</div>',
+      '</div>'
     ].join('\n');
   }
 
@@ -1987,8 +2029,10 @@
   function renderCartola(data) {
     var s = data.resumen;
     var c = data.cartola;
-    var rows = (c.movimientos || []).map(function(m) {
-      return '<tr><td>' + fmtDate(m.fecha_pago) + '</td><td>' + (m.referencia || m.concepto || '—') + '</td><td class="folio">' + (m.id || '—') + '</td><td class="num">$ ' + fmt(m.pagado_clp) + '</td></tr>';
+    var rows = (c.movimientos || []).slice().sort(function(a, b) {
+      return (b.fecha_pago || '').localeCompare(a.fecha_pago || '');
+    }).map(function(m) {
+      return '<tr><td>' + fmtDate(m.fecha_pago) + '</td><td>' + (m.id || m.concepto || '—') + '</td><td>' + (m.referencia || '—') + '</td><td class="num">$ ' + fmt(m.pagado_clp) + '</td></tr>';
     }).join('');
 
     return [
@@ -2008,14 +2052,16 @@
           '<div class="kpi-sub">IVA: $ ' + fmt(c.resumen.total_iva_clp) + '</div></div>',
       '</div>',
       '<div class="table-scroll"><table class="table-sticky-first"><thead><tr>',
-        '<th>Fecha</th><th>Concepto / Referencia</th><th>ID</th><th class="num">Pagado ($)</th>',
+        '<th>Fecha</th><th>Concepto</th><th>Referencia</th><th class="num">Pagado ($)</th>',
       '</tr></thead><tbody>' + rows + '</tbody></table></div>'
     ].join('\n');
   }
 
   function renderFacturas(data) {
     var c = data.cartola;
-    var facts = data.facturas_base.concat(data.facturas_adicionales);
+    var facts = data.facturas_base.concat(data.facturas_adicionales).sort(function(a, b) {
+      return (b.emision || '').localeCompare(a.emision || '');
+    });
     var rows = facts.map(function(f) {
       return '<tr><td class="folio">' + f.folio + '</td><td>' + fmtDate(f.emision) + '</td>' +
         '<td>' + f.concepto + ' <span class="' + badgeClass(f.tipo) + '">' + (f.tipo === 'Base' ? 'Base' : 'Adic.') + '</span></td>' +

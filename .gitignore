@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Config local de herramientas (no va a producción)
+.mcp.json
+
+# Node
+package-lock.json
+node_modules/
+
+# Documentos internos — no se publican en el portal del cliente
+**/doc/

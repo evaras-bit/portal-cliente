@@ -3,10 +3,10 @@
     "proyecto": "Ridley SPA",
     "cliente": "Ridley SPA",
     "estado": "En curso",
-    "fecha_entrega": "2026-07-15",
-    "semanas_restantes": 7,
-    "dias_restantes": 50,
-    "ultima_actualizacion": "2026-05-29T20:56:07.000Z"
+    "fecha_entrega": "2026-09-30",
+    "semanas_restantes": 10,
+    "dias_restantes": 69,
+    "ultima_actualizacion": "2026-07-23T16:00:00.000Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
@@ -16,266 +16,242 @@
     "total_adicionales_uf": 285.25,
     "cobrado_adicionales_uf": 285.25,
     "saldo_por_cobrar_uf": 869.35,
-    "saldo_por_cobrar_clp_aprox": 35275493,
+    "saldo_por_cobrar_clp_aprox": 35508418,
     "avance_financiero_pct": 88.7,
-    "avance_fisico_pct": 79,
-    "avance_fisico_compras_pct": 82,
+    "avance_fisico_pct": 74,
+    "avance_fisico_compras_pct": 80,
     "proximo_ep_uf": 240,
-    "proximo_ep_fecha": "2026-05-29",
-    "uf_referencia": 40576.86,
-    "uf_referencia_fecha": "2026-05-29"
+    "proximo_ep_fecha": "2026-08-15",
+    "uf_referencia": 40844.79,
+    "uf_referencia_fecha": "2026-07-23"
   },
   "gantt": {
     "meses": [
-      "2026-05",
-      "2026-06",
-      "2026-07"
+      "2026-08",
+      "2026-09"
     ],
     "partidas": [
       {
-        "nombre": "Terminaciones obra gruesa interior",
-        "categoria": "Obra gruesa",
-        "estado": "Terminado",
+        "nombre": "Terminaciones en curso",
+        "categoria": "Terminaciones en curso",
+        "estado": "En progreso",
         "semanas_activas": [
-          "2026-W19",
-          "2026-W20",
-          "2026-W21",
-          "2026-W22"
+          "2026-W32",
+          "2026-W33",
+          "2026-W34"
+        ]
+      },
+      {
+        "nombre": "Tablas cielo interior",
+        "categoria": "Terminaciones en curso",
+        "estado": "En progreso",
+        "semanas_activas": [
+          "2026-W32",
+          "2026-W33",
+          "2026-W34"
         ]
       },
       {
         "nombre": "Tablas muro interior",
-        "categoria": "Terminaciones",
-        "estado": "Terminado",
+        "categoria": "Terminaciones en curso",
+        "estado": "En progreso",
         "semanas_activas": [
-          "2026-W19",
-          "2026-W20",
-          "2026-W21",
-          "2026-W22"
+          "2026-W33",
+          "2026-W34"
         ]
       },
       {
         "nombre": "Receptáculo ducha",
-        "categoria": "Terminaciones",
-        "estado": "Programado",
-        "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
-        ]
-      },
-      {
-        "nombre": "Fosa séptica e instalaciones sanitarias",
-        "categoria": "Instalaciones",
-        "estado": "Programado",
-        "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
-        ]
-      },
-      {
-        "nombre": "Instalación planta de tratamiento",
-        "categoria": "Instalaciones",
-        "estado": "Programado",
-        "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
-        ]
-      },
-      {
-        "nombre": "Instalación cámaras de registros de alcantarillado",
-        "categoria": "Instalaciones",
+        "categoria": "Terminaciones en curso",
         "estado": "En progreso",
         "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
+          "2026-W33"
         ]
       },
       {
-        "nombre": "Pintura interior y puertas",
-        "categoria": "Terminaciones",
+        "nombre": "Porcelanato muros ducha",
+        "categoria": "Terminaciones en curso",
         "estado": "En progreso",
         "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
+          "2026-W33",
+          "2026-W34"
+        ]
+      },
+      {
+        "nombre": "F9 · Pintura interior y puertas",
+        "categoria": "F9 · Pintura interior y puertas",
+        "estado": "En progreso",
+        "semanas_activas": [
+          "2026-W32",
+          "2026-W33",
+          "2026-W34",
+          "2026-W35",
+          "2026-W36",
+          "2026-W37",
+          "2026-W38",
+          "2026-W39"
+        ]
+      },
+      {
+        "nombre": "Fragüe de porcelanato",
+        "categoria": "F9 · Pintura interior y puertas",
+        "estado": "En progreso",
+        "semanas_activas": [
+          "2026-W32",
+          "2026-W33"
         ]
       },
       {
         "nombre": "Pintura interior",
-        "categoria": "Terminaciones",
+        "categoria": "F9 · Pintura interior y puertas",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
-        ]
-      },
-      {
-        "nombre": "Instalación de ventanas",
-        "categoria": "Terminaciones",
-        "estado": "Programado",
-        "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
+          "2026-W35",
+          "2026-W36",
+          "2026-W37"
         ]
       },
       {
         "nombre": "Puertas y quincallería",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
+        "categoria": "F9 · Pintura interior y puertas",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
+          "2026-W37",
+          "2026-W38"
         ]
       },
       {
         "nombre": "Pintura de puertas",
-        "categoria": "Terminaciones",
+        "categoria": "F9 · Pintura interior y puertas",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W23",
-          "2026-W24",
-          "2026-W25",
-          "2026-W26",
-          "2026-W27"
+          "2026-W39"
         ]
       },
       {
-        "nombre": "Artefactos baño y módulos eléctricos",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
+        "nombre": "F10 · Artefactos baño y módulos eléctricos",
+        "categoria": "F10 · Artefactos baño y módulos eléctricos",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
-        ]
-      },
-      {
-        "nombre": "Mamparas",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
-        "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W34",
+          "2026-W35"
         ]
       },
       {
         "nombre": "W.C. — Lavamanos c/mueble",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
+        "categoria": "F10 · Artefactos baño y módulos eléctricos",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W34"
+        ]
+      },
+      {
+        "nombre": "Mamparas",
+        "categoria": "F10 · Artefactos baño y módulos eléctricos",
+        "estado": "Programado",
+        "semanas_activas": [
+          "2026-W34"
         ]
       },
       {
         "nombre": "Luminarias",
-        "categoria": "Instalaciones",
+        "categoria": "F10 · Artefactos baño y módulos eléctricos",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W34",
+          "2026-W35"
         ]
       },
       {
         "nombre": "Enchufes e interruptores",
-        "categoria": "Instalaciones",
-        "estado": "En progreso",
+        "categoria": "F10 · Artefactos baño y módulos eléctricos",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W35"
         ]
       },
       {
-        "nombre": "Muebles y artefactos cocina y baños",
-        "categoria": "Terminaciones",
+        "nombre": "F11 · Muebles y artefactos cocina y baños",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W39"
         ]
       },
       {
         "nombre": "Instalación de muebles",
-        "categoria": "Terminaciones",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
-        ]
-      },
-      {
-        "nombre": "Artefactos de cocina",
-        "categoria": "Terminaciones",
-        "estado": "Programado",
-        "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W39"
         ]
       },
       {
         "nombre": "Grifería",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W39"
+        ]
+      },
+      {
+        "nombre": "Instalación cubiertas",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
+        "estado": "Programado",
+        "semanas_activas": [
+          "2026-W39"
+        ]
+      },
+      {
+        "nombre": "Artefactos de cocina",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
+        "estado": "Programado",
+        "semanas_activas": [
+          "2026-W39"
         ]
       },
       {
         "nombre": "Accesorios baños",
-        "categoria": "Terminaciones",
-        "estado": "En progreso",
+        "categoria": "F11 · Muebles y artefactos cocina y baños",
+        "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W39"
         ]
       },
       {
-        "nombre": "Levantamiento de observaciones",
-        "categoria": "Otros",
+        "nombre": "F13 · Fosa séptica e instalaciones sanitarias",
+        "categoria": "F13 · Fosa séptica e instalaciones sanitarias",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W35",
+          "2026-W36",
+          "2026-W37"
         ]
       },
       {
-        "nombre": "Limpieza, despeje y retiro de faena",
-        "categoria": "Otros",
+        "nombre": "Instalación planta de tratamiento",
+        "categoria": "F13 · Fosa séptica e instalaciones sanitarias",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W28",
-          "2026-W29"
+          "2026-W35",
+          "2026-W36"
         ]
       },
       {
-        "nombre": "ENTREGA FINAL — Acta de recepción · 15 Jul",
+        "nombre": "Instalación cámaras de alcantarillado",
+        "categoria": "F13 · Fosa séptica e instalaciones sanitarias",
+        "estado": "Programado",
+        "semanas_activas": [
+          "2026-W36",
+          "2026-W37"
+        ]
+      },
+      {
+        "nombre": "ENTREGA FINAL — Acta de recepción · 30 Sep",
         "categoria": "Otros",
         "estado": "Programado",
         "semanas_activas": [
-          "2026-W29"
+          "2026-W39"
         ],
         "milestone": true
       }
@@ -443,7 +419,7 @@
       "estado": "Pagado"
     },
     {
-      "fecha": "2026-05-29",
+      "fecha": "2026-08-15",
       "concepto": "EEPP — 240 UF",
       "factura": null,
       "pagado_clp": null,
@@ -451,7 +427,7 @@
       "estado": "Pendiente"
     },
     {
-      "fecha": "2026-06-15",
+      "fecha": "2026-08-30",
       "concepto": "EEPP — 280 UF",
       "factura": null,
       "pagado_clp": null,
@@ -459,7 +435,7 @@
       "estado": "Pendiente"
     },
     {
-      "fecha": "2026-06-30",
+      "fecha": "2026-09-15",
       "concepto": "EEPP — 229 UF",
       "factura": null,
       "pagado_clp": null,
@@ -467,7 +443,7 @@
       "estado": "Pendiente"
     },
     {
-      "fecha": "2026-07-15",
+      "fecha": "2026-09-30",
       "concepto": "Entrega final — 120 UF",
       "factura": null,
       "pagado_clp": null,

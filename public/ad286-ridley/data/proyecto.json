@@ -6,24 +6,24 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-07-23T16:00:00.000Z"
+    "ultima_actualizacion": "2026-11-19T16:25:35.465Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
-    "pagado_uf": 6815.9,
-    "pagado_clp": 270185395,
-    "transferencias": 20,
+    "pagado_uf": 7095.9,
+    "pagado_clp": 281651395,
+    "transferencias": 22,
     "total_adicionales_uf": 285.25,
     "cobrado_adicionales_uf": 285.25,
-    "saldo_por_cobrar_uf": 869.35,
-    "saldo_por_cobrar_clp_aprox": 35508418,
-    "avance_financiero_pct": 88.7,
+    "saldo_por_cobrar_uf": 589.35,
+    "saldo_por_cobrar_clp_aprox": 24134413,
+    "avance_financiero_pct": 92.3,
     "avance_fisico_pct": 74,
     "avance_fisico_compras_pct": 80,
     "proximo_ep_uf": 240,
     "proximo_ep_fecha": "2026-08-15",
-    "uf_referencia": 40844.79,
-    "uf_referencia_fecha": "2026-07-23"
+    "uf_referencia": 40950.9,
+    "uf_referencia_fecha": "2026-09-17"
   },
   "gantt": {
     "meses": [
@@ -427,12 +427,20 @@
       "estado": "Pendiente"
     },
     {
-      "fecha": "2026-08-30",
-      "concepto": "EEPP — 280 UF",
+      "fecha": "2026-09-17",
+      "concepto": "EEPP — 280 UF — transferencia 1/2 Base",
       "factura": null,
-      "pagado_clp": null,
-      "uf": 280,
-      "estado": "Pendiente"
+      "pagado_clp": 7000000,
+      "uf": 170.94,
+      "estado": "Pagado"
+    },
+    {
+      "fecha": "2026-09-17",
+      "concepto": "EEPP — 280 UF — transferencia 2/2 Base",
+      "factura": null,
+      "pagado_clp": 4466000,
+      "uf": 109.06,
+      "estado": "Pagado"
     },
     {
       "fecha": "2026-09-15",
@@ -577,10 +585,10 @@
   ],
   "cartola": {
     "resumen": {
-      "total_pagado_clp": 270185395,
-      "total_pagado_uf": 6815.9,
+      "total_pagado_clp": 281651395,
+      "total_pagado_uf": 7095.9,
       "n_facturas": 12,
-      "n_transferencias": 20,
+      "n_transferencias": 22,
       "total_neto_clp": 225628367,
       "total_iva_clp": 42869389,
       "total_con_iva_clp": 268497756
@@ -744,6 +752,22 @@
         "referencia": "Transferencia exacta",
         "pagado_clp": 8068000,
         "uf": 200.0,
+        "estado": "Exacto"
+      },
+      {
+        "id": "EEPP — 280 UF — transferencia 1/2 Base",
+        "fecha_pago": "2026-09-17",
+        "referencia": "Transf. RIDLEY SPA · mov. 000006736",
+        "pagado_clp": 7000000,
+        "uf": 170.94,
+        "estado": "Parcial"
+      },
+      {
+        "id": "EEPP — 280 UF — transferencia 2/2 Base",
+        "fecha_pago": "2026-09-17",
+        "referencia": "Transf de RIDLEY SPA",
+        "pagado_clp": 4466000,
+        "uf": 109.06,
         "estado": "Exacto"
       }
     ]

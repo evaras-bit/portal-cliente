@@ -2274,6 +2274,10 @@
     var ncs = (data.notas_credito || []).slice().sort(function(a, b) {
       return (b.emision || '').localeCompare(a.emision || '');
     });
+    var totalUF = 0;
+    facts.forEach(function(f) { totalUF += f.total_uf || 0; });
+    ncs.forEach(function(f) { totalUF -= f.total_uf || 0; });
+    totalUF = Math.round(totalUF * 100) / 100;
     var rows = facts.map(function(f) {
       return '<tr><td class="folio">' + f.folio + '</td><td>' + fmtDate(f.emision) + '</td>' +
         '<td>' + f.concepto + ' <span class="' + badgeClass(f.tipo) + '">' + (f.tipo === 'Base' ? 'Base' : 'Adic.') + '</span></td>' +
@@ -2305,16 +2309,16 @@
           '<div class="kpi-sub">' + data.facturas_base.length + ' base + ' + data.facturas_adicionales.length + ' adicionales' + (ncs.length ? ' · ' + ncs.length + ' NC' : '') + '</div></div>',
         '<div class="kpi"><div class="kpi-label">Total Neto</div>',
           '<div class="kpi-value">$ ' + fmt(c.resumen.total_neto_clp) + '</div>',
-          '<div class="kpi-sub">' + fmt(c.resumen.total_pagado_uf, 2) + ' UF</div></div>',
+          '<div class="kpi-sub">' + fmt(totalUF, 2) + ' UF</div></div>',
         '<div class="kpi adicional"><div class="kpi-label">Total IVA</div>',
           '<div class="kpi-value">$ ' + fmt(c.resumen.total_iva_clp) + '</div>',
           '<div class="kpi-sub">19%</div></div>',
         '<div class="kpi avance"><div class="kpi-label">Total con IVA</div>',
           '<div class="kpi-value">$ ' + fmt(c.resumen.total_con_iva_clp) + '</div>',
-          '<div class="kpi-sub">' + fmt(c.resumen.total_pagado_uf, 2) + ' UF</div></div>',
+          '<div class="kpi-sub">' + fmt(totalUF, 2) + ' UF</div></div>',
         '<div class="kpi saldo"><div class="kpi-label">Total UF</div>',
-          '<div class="kpi-value">' + fmt(c.resumen.total_pagado_uf) + '<span class="kpi-unit">UF</span></div>',
-          '<div class="kpi-sub">Suma facturas con IVA</div></div>',
+          '<div class="kpi-value">' + fmt(totalUF, 2) + '<span class="kpi-unit">UF</span></div>',
+          '<div class="kpi-sub">Facturación neta de NC</div></div>',
       '</div>',
       '<div class="table-scroll"><table class="table-sticky-first"><thead><tr>',
         '<th>Folio</th><th>Emisión</th><th>Concepto</th>',

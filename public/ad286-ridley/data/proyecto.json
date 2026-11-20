@@ -6,22 +6,22 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-11-20T18:36:35.041Z"
+    "ultima_actualizacion": "2026-11-20T18:43:11.724Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
-    "pagado_uf": 7095.9,
-    "pagado_clp": 281651395,
-    "transferencias": 22,
+    "pagado_uf": 7575.45,
+    "pagado_clp": 301194521,
+    "transferencias": 25,
     "total_adicionales_uf": 285.25,
     "cobrado_adicionales_uf": 285.25,
-    "saldo_por_cobrar_uf": 589.35,
-    "saldo_por_cobrar_clp_aprox": 24134413,
-    "avance_financiero_pct": 92.3,
+    "saldo_por_cobrar_uf": 109.8,
+    "saldo_por_cobrar_clp_aprox": 4496409,
+    "avance_financiero_pct": 98.6,
     "avance_fisico_pct": 74,
     "avance_fisico_compras_pct": 80,
-    "proximo_ep_uf": 240,
-    "proximo_ep_fecha": "2026-08-15",
+    "proximo_ep_uf": 109.8,
+    "proximo_ep_fecha": "2026-09-30",
     "uf_referencia": 40950.9,
     "uf_referencia_fecha": "2026-09-17"
   },
@@ -419,14 +419,6 @@
       "estado": "Pagado"
     },
     {
-      "fecha": "2026-08-15",
-      "concepto": "EEPP — 240 UF",
-      "factura": null,
-      "pagado_clp": null,
-      "uf": 240,
-      "estado": "Pendiente"
-    },
-    {
       "fecha": "2026-09-17",
       "concepto": "EEPP — 280 UF — transferencia 1/2 Base",
       "factura": null,
@@ -443,19 +435,27 @@
       "estado": "Pagado"
     },
     {
-      "fecha": "2026-09-15",
-      "concepto": "EEPP — 229 UF",
-      "factura": null,
-      "pagado_clp": null,
-      "uf": 229,
-      "estado": "Pendiente"
+      "fecha": "2026-06-02",
+      "concepto": "EEPP — 240 UF (FAC-183)",
+      "factura": "FAC-183",
+      "pagado_clp": 9738480,
+      "uf": 239.6,
+      "estado": "Pagado"
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "EEPP — 229 UF (FAC-187)",
+      "factura": "FAC-187",
+      "pagado_clp": 9804646,
+      "uf": 239.95,
+      "estado": "Pagado"
     },
     {
       "fecha": "2026-09-30",
-      "concepto": "Entrega final — 120 UF",
+      "concepto": "Entrega final — saldo 109,8 UF",
       "factura": null,
       "pagado_clp": null,
-      "uf": 120,
+      "uf": 109.8,
       "estado": "Pendiente"
     }
   ],
@@ -625,10 +625,10 @@
   ],
   "cartola": {
     "resumen": {
-      "total_pagado_clp": 281651395,
-      "total_pagado_uf": 7095.9,
+      "total_pagado_clp": 301194521,
+      "total_pagado_uf": 7575.45,
       "n_facturas": 16,
-      "n_transferencias": 22,
+      "n_transferencias": 25,
       "total_neto_clp": 251686456,
       "total_iva_clp": 47820466,
       "total_con_iva_clp": 299506882,
@@ -809,6 +809,30 @@
         "referencia": "Transf de RIDLEY SPA",
         "pagado_clp": 4466000,
         "uf": 109.06,
+        "estado": "Exacto"
+      },
+      {
+        "id": "FAC-183 — pago 1/1 Base",
+        "fecha_pago": "2026-06-02",
+        "referencia": "Transf de RIDLEY SPA",
+        "pagado_clp": 9738480,
+        "uf": 239.6,
+        "estado": "Exacto"
+      },
+      {
+        "id": "FAC-187 — pago 1/2 Base",
+        "fecha_pago": "2026-08-21",
+        "referencia": "Transf. RIDLEY SPA · mov. 28000243",
+        "pagado_clp": 7000000,
+        "uf": 171.31,
+        "estado": "Parcial"
+      },
+      {
+        "id": "FAC-187 — pago 2/2 Base",
+        "fecha_pago": "2026-08-21",
+        "referencia": "Transf de RIDLEY SPA",
+        "pagado_clp": 2804646,
+        "uf": 68.64,
         "estado": "Exacto"
       }
     ]

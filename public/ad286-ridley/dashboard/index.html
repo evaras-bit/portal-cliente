@@ -393,6 +393,22 @@
   }
   .tab-btn.tab-logout svg { width: 13px; height: 13px; }
 
+  /* Botón Exportar Excel: acción financiera destacada */
+  .tab-btn.tab-export {
+    color: var(--teal);
+    background: rgba(28,60,68,0.06);
+    font-weight: 600;
+  }
+  .tab-btn.tab-export:hover {
+    color: var(--teal);
+    background: rgba(28,60,68,0.12);
+  }
+  .tab-btn.tab-export:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .tab-btn.tab-export svg { width: 14px; height: 14px; }
+
   .tab-content {
     display: none;
     background: var(--white);
@@ -1523,6 +1539,10 @@
       Adicionales
     </button>
     <div class="tab-divider"></div>
+    <button class="tab-btn tab-export" id="btnExportar" onclick="exportarFinanciero()" title="Descargar el libro Excel financiero">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+      Exportar Excel
+    </button>
     <button class="tab-btn tab-logout" onclick="logout()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
       Cerrar sesión
@@ -1765,6 +1785,170 @@
     document.getElementById('tab-cartola').innerHTML     = renderCartola(data);
     document.getElementById('tab-facturas').innerHTML    = renderFacturas(data);
     document.getElementById('tab-adicionales').innerHTML = renderAdicionales(data);
+  }
+
+  // ============ EXPORTAR EXCEL FINANCIERO ============
+  // Un solo libro, siempre financiero: resumen, abonos/cargos, facturas y cuotas.
+  function cargarXLSX(cb) {
+    if (window.XLSX) return cb(null);
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = function() { cb(null); };
+    s.onerror = function() { cb(new Error('No se pudo cargar SheetJS')); };
+    document.head.appendChild(s);
+  }
+
+  function aplicarFormato(ws, r1, c1, r2, c2, z) {
+    for (var r = r1; r <= r2; r++) {
+      for (var c = c1; c <= c2; c++) {
+        var addr = XLSX.utils.encode_cell({ r: r, c: c });
+        if (ws[addr]) ws[addr].z = z;
+      }
+    }
+  }
+
+  function anchos(ws, lista) {
+    ws['!cols'] = lista.map(function(w) { return { wch: w }; });
+  }
+
+  function generarExcelFinanciero(d) {
+    var r = d.resumen || {};
+    var m = d.meta || {};
+    var cartola = d.cartola || {};
+    var movimientos = cartola.movimientos || [];
+    var base = d.facturas_base || [];
+    var adi = d.facturas_adicionales || [];
+    var edps = d.estados_de_pago || [];
+    var wb = XLSX.utils.book_new();
+
+    // ── Hoja 1: Resumen ──
+    var totalCargos = (r.contrato_base_uf || 0) + (r.total_adicionales_uf || 0);
+    var pendientes = edps.filter(function(e) { return e.estado !== 'Pagado'; })
+      .slice().sort(function(a, b) { return (a.fecha || '').localeCompare(b.fecha || ''); });
+    var pendientesUF = Math.round(pendientes.reduce(function(a, e) { return a + (e.uf || 0); }, 0) * 100) / 100;
+
+    var resumen = [
+      ['PORTAL FINANCIERO — ' + (m.proyecto || 'Ridley SPA') + (m.cliente && m.cliente !== m.proyecto ? ' · ' + m.cliente : '')],
+      ['Actualizado', fmtDateShort(m.ultima_actualizacion)],
+      ['UF de referencia', r.uf_referencia || '', 'Fecha UF', r.uf_referencia_fecha || ''],
+      [],
+      ['CONCEPTO', 'MONTO UF', 'MONTO CLP'],
+      ['Contrato original', r.contrato_base_uf || 0, ''],
+      ['Adicionales', r.total_adicionales_uf || 0, ''],
+      ['TOTAL A PAGAR', totalCargos, ''],
+      ['Abonos recibidos', r.pagado_uf || 0, r.pagado_clp || 0],
+      ['SALDO POR COBRAR', r.saldo_por_cobrar_uf || 0, r.saldo_por_cobrar_clp_aprox || 0],
+      [],
+      ['Avance financiero', Number(((r.avance_financiero_pct || 0) / 100).toFixed(4))],
+      ['Transferencias recibidas', r.transferencias || 0],
+      ['Facturas emitidas', base.length + adi.length],
+      ['Cuotas pendientes', pendientes.length],
+      ['UF pendientes', pendientesUF],
+      [],
+      ['DETALLE DE CUOTAS PENDIENTES'],
+      ['Fecha', 'Concepto', 'UF']
+    ];
+    pendientes.forEach(function(e) {
+      resumen.push([e.fecha || '', e.concepto || '', e.uf || 0]);
+    });
+    var wsResumen = XLSX.utils.aoa_to_sheet(resumen);
+    aplicarFormato(wsResumen, 2, 1, 2, 1, '#,##0.00');
+    aplicarFormato(wsResumen, 5, 1, 9, 1, '#,##0.00');
+    aplicarFormato(wsResumen, 8, 2, 9, 2, '$#,##0');
+    aplicarFormato(wsResumen, 11, 1, 11, 1, '0.0%');
+    aplicarFormato(wsResumen, 15, 1, 15, 1, '#,##0.00');
+    if (pendientes.length) aplicarFormato(wsResumen, 19, 2, 18 + pendientes.length, 2, '#,##0.00');
+    anchos(wsResumen, [34, 18, 18, 14]);
+    XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen');
+
+    // ── Hoja 2: Abonos y cargos ──
+    var filas = [];
+    filas.push({ fecha: '', tipo: 'Cargo', concepto: 'Contrato original', doc: 'Contrato', cargo: r.contrato_base_uf || 0, abono: '', clp: '', estado: '' });
+    adi.forEach(function(f) {
+      filas.push({ fecha: f.emision || '', tipo: 'Cargo', concepto: f.concepto || 'Adicional', doc: f.folio || '', cargo: f.total_uf || 0, abono: '', clp: f.total_clp || '', estado: '' });
+    });
+    movimientos.forEach(function(x) {
+      filas.push({ fecha: x.fecha_pago || '', tipo: 'Abono', concepto: x.id || x.concepto || 'Pago', doc: x.referencia || '', cargo: '', abono: x.uf || 0, clp: x.pagado_clp || '', estado: x.estado || '' });
+    });
+    filas.sort(function(a, b) {
+      var fa = a.fecha || '0000-00-00', fb = b.fecha || '0000-00-00';
+      if (fa !== fb) return fa.localeCompare(fb);
+      if (a.tipo !== b.tipo) return a.tipo === 'Cargo' ? -1 : 1;
+      return 0;
+    });
+
+    var saldo = 0;
+    var ledger = [['Fecha', 'Tipo', 'Concepto', 'Documento / Referencia', 'Cargo UF', 'Abono UF', 'Saldo UF', 'Monto CLP', 'Estado']];
+    filas.forEach(function(x) {
+      saldo += (Number(x.cargo) || 0) - (Number(x.abono) || 0);
+      saldo = Math.round(saldo * 100) / 100;
+      ledger.push([x.fecha, x.tipo, x.concepto, x.doc, x.cargo, x.abono, saldo, x.clp, x.estado]);
+    });
+    ledger.push(['', '', 'TOTAL', '', totalCargos, r.pagado_uf || 0, saldo, r.pagado_clp || 0, '']);
+    var wsLedger = XLSX.utils.aoa_to_sheet(ledger);
+    aplicarFormato(wsLedger, 1, 4, ledger.length - 1, 6, '#,##0.00');
+    aplicarFormato(wsLedger, 1, 7, ledger.length - 1, 7, '$#,##0');
+    wsLedger['!autofilter'] = { ref: 'A1:I' + ledger.length };
+    anchos(wsLedger, [12, 10, 42, 34, 12, 12, 12, 16, 12]);
+    XLSX.utils.book_append_sheet(wb, wsLedger, 'Abonos y cargos');
+
+    // ── Hoja 3: Facturas ──
+    var facturas = base.concat(adi).slice().sort(function(a, b) {
+      return (a.emision || '').localeCompare(b.emision || '');
+    });
+    var rowsF = [['Folio', 'Tipo', 'Emisión', 'Concepto', 'Neto CLP', 'IVA CLP', 'Total CLP', 'Total UF']];
+    facturas.forEach(function(f) {
+      rowsF.push([f.folio || '', f.tipo || '', f.emision || '', f.concepto || '', f.neto_clp || 0, f.iva_clp || 0, f.total_clp || 0, f.total_uf || 0]);
+    });
+    var wsF = XLSX.utils.aoa_to_sheet(rowsF);
+    aplicarFormato(wsF, 1, 4, rowsF.length - 1, 6, '$#,##0');
+    aplicarFormato(wsF, 1, 7, rowsF.length - 1, 7, '#,##0.00');
+    wsF['!autofilter'] = { ref: 'A1:H' + rowsF.length };
+    anchos(wsF, [10, 10, 12, 46, 14, 14, 14, 12]);
+    XLSX.utils.book_append_sheet(wb, wsF, 'Facturas');
+
+    // ── Hoja 4: Cuotas ──
+    var cuotas = edps.slice().sort(function(a, b) {
+      return (a.fecha || '').localeCompare(b.fecha || '');
+    });
+    var rowsC = [['Fecha', 'Concepto', 'Factura', 'Pagado CLP', 'UF', 'Estado']];
+    cuotas.forEach(function(e) {
+      rowsC.push([e.fecha || '', e.concepto || '', e.factura || '', e.pagado_clp == null ? '' : e.pagado_clp, e.uf || 0, e.estado || '']);
+    });
+    var wsC = XLSX.utils.aoa_to_sheet(rowsC);
+    aplicarFormato(wsC, 1, 3, rowsC.length - 1, 3, '$#,##0');
+    aplicarFormato(wsC, 1, 4, rowsC.length - 1, 4, '#,##0.00');
+    wsC['!autofilter'] = { ref: 'A1:F' + rowsC.length };
+    anchos(wsC, [12, 48, 10, 14, 10, 12]);
+    XLSX.utils.book_append_sheet(wb, wsC, 'Cuotas');
+
+    var nombre = 'Ridley_AD286_Financiero_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+    XLSX.writeFile(wb, nombre, { compression: true });
+  }
+
+  function exportarFinanciero() {
+    if (!_dashData) {
+      alert('Los datos aún no han cargado. Espera un momento y vuelve a intentarlo.');
+      return;
+    }
+    var btn = document.getElementById('btnExportar');
+    var original = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = 'Generando…'; }
+    cargarXLSX(function(err) {
+      if (err) {
+        alert('No se pudo cargar el generador de Excel. Revisa tu conexión a internet.');
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+        return;
+      }
+      try {
+        generarExcelFinanciero(_dashData);
+      } catch (e) {
+        console.error(e);
+        alert('No se pudo generar el Excel: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+      }
+    });
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────

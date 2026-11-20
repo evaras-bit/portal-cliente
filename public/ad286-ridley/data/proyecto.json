@@ -6,7 +6,7 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-11-20T18:43:11.724Z"
+    "ultima_actualizacion": "2026-11-20T18:57:16.316Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
@@ -23,7 +23,8 @@
     "proximo_ep_uf": 109.8,
     "proximo_ep_fecha": "2026-09-30",
     "uf_referencia": 40950.9,
-    "uf_referencia_fecha": "2026-09-17"
+    "uf_referencia_fecha": "2026-09-17",
+    "total_contrato_uf": 7685.25
   },
   "gantt": {
     "meses": [

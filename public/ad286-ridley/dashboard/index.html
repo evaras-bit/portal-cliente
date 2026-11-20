@@ -1819,6 +1819,7 @@
     var base = d.facturas_base || [];
     var adi = d.facturas_adicionales || [];
     var edps = d.estados_de_pago || [];
+    var ncs = d.notas_credito || [];
     var wb = XLSX.utils.book_new();
 
     // ── Hoja 1: Resumen ──
@@ -1851,6 +1852,14 @@
     pendientes.forEach(function(e) {
       resumen.push([e.fecha || '', e.concepto || '', e.uf || 0]);
     });
+    if (ncs.length) {
+      resumen.push([]);
+      resumen.push(['NOTAS DE CRÉDITO']);
+      ncs.forEach(function(f) {
+        resumen.push([f.emision || '', f.folio + ' · ' + (f.concepto || ''), -(f.total_uf || 0)]);
+      });
+      resumen.push(['Facturación neta (CLP)', (d.cartola.resumen || {}).total_con_iva_clp || 0]);
+    }
     var wsResumen = XLSX.utils.aoa_to_sheet(resumen);
     aplicarFormato(wsResumen, 2, 1, 2, 1, '#,##0.00');
     aplicarFormato(wsResumen, 5, 1, 9, 1, '#,##0.00');
@@ -1858,6 +1867,11 @@
     aplicarFormato(wsResumen, 11, 1, 11, 1, '0.0%');
     aplicarFormato(wsResumen, 15, 1, 15, 1, '#,##0.00');
     if (pendientes.length) aplicarFormato(wsResumen, 19, 2, 18 + pendientes.length, 2, '#,##0.00');
+    if (ncs.length) {
+      var ncIni = resumen.length - ncs.length - 1;
+      aplicarFormato(wsResumen, ncIni, 2, ncIni + ncs.length - 1, 2, '#,##0.00');
+      aplicarFormato(wsResumen, resumen.length - 1, 1, resumen.length - 1, 1, '$#,##0');
+    }
     anchos(wsResumen, [34, 18, 18, 14]);
     XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen');
 
@@ -1900,11 +1914,22 @@
     facturas.forEach(function(f) {
       rowsF.push([f.folio || '', f.tipo || '', f.emision || '', f.concepto || '', f.neto_clp || 0, f.iva_clp || 0, f.total_clp || 0, f.total_uf || 0]);
     });
+    ncs.forEach(function(f) {
+      rowsF.push([f.folio || '', 'Nota de crédito', f.emision || '', f.concepto || '', -(f.neto_clp || 0), -(f.iva_clp || 0), -(f.total_clp || 0), -(f.total_uf || 0)]);
+    });
+    var suma = function(arr, k) {
+      return arr.reduce(function(a, x) { return a + (x[k] || 0); }, 0);
+    };
+    var netoF = suma(facturas, 'neto_clp') - suma(ncs, 'neto_clp');
+    var ivaF = suma(facturas, 'iva_clp') - suma(ncs, 'iva_clp');
+    var clpF = suma(facturas, 'total_clp') - suma(ncs, 'total_clp');
+    var ufF = Math.round((suma(facturas, 'total_uf') - suma(ncs, 'total_uf')) * 100) / 100;
+    rowsF.push(['', '', '', 'TOTAL NETO', netoF, ivaF, clpF, ufF]);
     var wsF = XLSX.utils.aoa_to_sheet(rowsF);
     aplicarFormato(wsF, 1, 4, rowsF.length - 1, 6, '$#,##0');
     aplicarFormato(wsF, 1, 7, rowsF.length - 1, 7, '#,##0.00');
-    wsF['!autofilter'] = { ref: 'A1:H' + rowsF.length };
-    anchos(wsF, [10, 10, 12, 46, 14, 14, 14, 12]);
+    wsF['!autofilter'] = { ref: 'A1:H' + (rowsF.length - 1) };
+    anchos(wsF, [10, 18, 12, 46, 14, 14, 14, 12]);
     XLSX.utils.book_append_sheet(wb, wsF, 'Facturas');
 
     // ── Hoja 4: Cuotas ──
@@ -2221,7 +2246,7 @@
 
     return [
       '<div class="section-title">Cartola Bancaria — Movimientos</div>',
-      '<div class="section-subtitle">' + (c.resumen.n_transferencias || 0) + ' transferencias bancarias · UF según SII al día de cada pago</div>',
+      '<div class="section-subtitle">' + (c.resumen.n_transferencias || 0) + ' transferencias bancarias · UF según SII al día de cada pago' + (c.resumen.n_notas_credito ? ' · ' + c.resumen.n_notas_credito + ' nota(s) de crédito' : '') + '</div>',
       '<div class="kpis kpis-1">',
         '<div class="kpi avance kpi-highlight"><div class="kpi-label">Total Cartola Pagado</div>',
           '<div class="kpi-value">$ ' + fmt(c.resumen.total_pagado_clp) + '</div>',
@@ -2246,20 +2271,38 @@
     var facts = data.facturas_base.concat(data.facturas_adicionales).sort(function(a, b) {
       return (b.emision || '').localeCompare(a.emision || '');
     });
+    var ncs = (data.notas_credito || []).slice().sort(function(a, b) {
+      return (b.emision || '').localeCompare(a.emision || '');
+    });
     var rows = facts.map(function(f) {
       return '<tr><td class="folio">' + f.folio + '</td><td>' + fmtDate(f.emision) + '</td>' +
         '<td>' + f.concepto + ' <span class="' + badgeClass(f.tipo) + '">' + (f.tipo === 'Base' ? 'Base' : 'Adic.') + '</span></td>' +
         '<td class="num">' + fmt(f.neto_clp) + '</td><td class="num">' + fmt(f.iva_clp) + '</td>' +
         '<td class="num">' + fmt(f.total_clp) + '</td><td class="num">' + fmt(f.total_uf, 2) + '</td></tr>';
     }).join('');
+    var ncRows = ncs.map(function(f) {
+      return '<tr><td class="folio">' + f.folio + '</td><td>' + fmtDate(f.emision) + '</td>' +
+        '<td>' + f.concepto + ' <span class="badge pend">NC</span></td>' +
+        '<td>' + (f.referencia_folio || '—') + '</td>' +
+        '<td class="num">' + fmt(-f.neto_clp) + '</td><td class="num">' + fmt(-f.iva_clp) + '</td>' +
+        '<td class="num">' + fmt(-f.total_clp) + '</td><td class="num">' + fmt(-f.total_uf, 2) + '</td></tr>';
+    }).join('');
+    var ncSection = ncs.length ? [
+      '<div class="section-title" style="margin-top:28px;">Notas de Crédito</div>',
+      '<div class="section-subtitle">Documentos que anulan o rebajan facturas · Montos en negativo</div>',
+      '<div class="table-scroll"><table class="table-sticky-first"><thead><tr>',
+        '<th>Folio</th><th>Emisión</th><th>Concepto</th><th>Factura</th>',
+        '<th class="num">Neto ($)</th><th class="num">IVA ($)</th><th class="num">Total ($)</th><th class="num">Total UF</th>',
+      '</tr></thead><tbody>' + ncRows + '</tbody></table></div>'
+    ].join('\n') : '';
 
     return [
       '<div class="section-title">Facturas Emitidas</div>',
-      '<div class="section-subtitle">' + facts.length + ' facturas emitidas · Fuente DTE SII · Montos con IVA incluido</div>',
+      '<div class="section-subtitle">' + facts.length + ' facturas emitidas' + (ncs.length ? ' · ' + ncs.length + ' nota(s) de crédito' : '') + ' · Fuente DTE SII · Montos con IVA incluido</div>',
       '<div class="kpis kpis-5">',
         '<div class="kpi"><div class="kpi-label">N° de Facturas</div>',
           '<div class="kpi-value">' + facts.length + '<span class="kpi-unit">fac</span></div>',
-          '<div class="kpi-sub">' + data.facturas_base.length + ' base + ' + data.facturas_adicionales.length + ' adicionales</div></div>',
+          '<div class="kpi-sub">' + data.facturas_base.length + ' base + ' + data.facturas_adicionales.length + ' adicionales' + (ncs.length ? ' · ' + ncs.length + ' NC' : '') + '</div></div>',
         '<div class="kpi"><div class="kpi-label">Total Neto</div>',
           '<div class="kpi-value">$ ' + fmt(c.resumen.total_neto_clp) + '</div>',
           '<div class="kpi-sub">' + fmt(c.resumen.total_pagado_uf, 2) + ' UF</div></div>',
@@ -2276,7 +2319,8 @@
       '<div class="table-scroll"><table class="table-sticky-first"><thead><tr>',
         '<th>Folio</th><th>Emisión</th><th>Concepto</th>',
         '<th class="num">Neto ($)</th><th class="num">IVA ($)</th><th class="num">Total ($)</th><th class="num">Total UF</th>',
-      '</tr></thead><tbody>' + rows + '</tbody></table></div>'
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>',
+      ncSection
     ].join('\n');
   }
 

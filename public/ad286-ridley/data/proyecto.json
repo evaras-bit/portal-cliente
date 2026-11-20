@@ -6,7 +6,7 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-11-20T17:38:12.104Z"
+    "ultima_actualizacion": "2026-11-20T17:46:13.675Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
@@ -599,9 +599,10 @@
       "total_pagado_uf": 7095.9,
       "n_facturas": 13,
       "n_transferencias": 22,
-      "total_neto_clp": 235334720,
-      "total_iva_clp": 44713596,
-      "total_con_iva_clp": 280048316
+      "total_neto_clp": 225628367,
+      "total_iva_clp": 42869389,
+      "total_con_iva_clp": 268497756,
+      "n_notas_credito": 1
     },
     "movimientos": [
       {
@@ -781,5 +782,19 @@
         "estado": "Exacto"
       }
     ]
-  }
+  },
+  "notas_credito": [
+    {
+      "folio": "NC-21",
+      "tipo": "Nota de crédito",
+      "emision": "2026-11-20",
+      "concepto": "Anulación Factura N° 195 — Avance de Obra EEPP 130 (237 UF)",
+      "referencia_folio": "FAC-195",
+      "referencia_fecha": "2026-11-19",
+      "neto_clp": 9706353,
+      "iva_clp": 1844207,
+      "total_clp": 11550560,
+      "total_uf": 237
+    }
+  ]
 }

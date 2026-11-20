@@ -6,7 +6,7 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-11-19T16:25:35.465Z"
+    "ultima_actualizacion": "2026-11-20T17:38:12.104Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
@@ -559,6 +559,16 @@
       "iva_clp": 1288168,
       "total_clp": 8068000,
       "total_uf": 200
+    },
+    {
+      "folio": "FAC-195",
+      "tipo": "Base",
+      "emision": "2026-11-19",
+      "concepto": "Avance de Obra — EEPP 130 (237 UF)",
+      "neto_clp": 9706353,
+      "iva_clp": 1844207,
+      "total_clp": 11550560,
+      "total_uf": 237
     }
   ],
   "facturas_adicionales": [
@@ -587,11 +597,11 @@
     "resumen": {
       "total_pagado_clp": 281651395,
       "total_pagado_uf": 7095.9,
-      "n_facturas": 12,
+      "n_facturas": 13,
       "n_transferencias": 22,
-      "total_neto_clp": 225628367,
-      "total_iva_clp": 42869389,
-      "total_con_iva_clp": 268497756
+      "total_neto_clp": 235334720,
+      "total_iva_clp": 44713596,
+      "total_con_iva_clp": 280048316
     },
     "movimientos": [
       {

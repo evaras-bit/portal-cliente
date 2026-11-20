@@ -6,7 +6,7 @@
     "fecha_entrega": "2026-09-30",
     "semanas_restantes": 10,
     "dias_restantes": 69,
-    "ultima_actualizacion": "2026-11-20T17:46:13.675Z"
+    "ultima_actualizacion": "2026-11-20T18:36:35.041Z"
   },
   "resumen": {
     "contrato_base_uf": 7400,
@@ -569,6 +569,36 @@
       "iva_clp": 1844207,
       "total_clp": 11550560,
       "total_uf": 237
+    },
+    {
+      "folio": "FAC-183",
+      "tipo": "Base",
+      "emision": "2026-08-01",
+      "concepto": "Avance de Obra — según DTE SII",
+      "neto_clp": 8183597,
+      "iva_clp": 1554883,
+      "total_clp": 9738480,
+      "total_uf": 238.43
+    },
+    {
+      "folio": "FAC-187",
+      "tipo": "Base",
+      "emision": "2026-08-20",
+      "concepto": "Avance de Obra — según DTE SII",
+      "neto_clp": 8239198,
+      "iva_clp": 1565488,
+      "total_clp": 9804646,
+      "total_uf": 239.95
+    },
+    {
+      "folio": "FAC-191",
+      "tipo": "Base",
+      "emision": "2026-09-14",
+      "concepto": "Avance de Obra — EEPP (280 UF)",
+      "neto_clp": 9635294,
+      "iva_clp": 1830706,
+      "total_clp": 11466000,
+      "total_uf": 280.0
     }
   ],
   "facturas_adicionales": [
@@ -597,11 +627,11 @@
     "resumen": {
       "total_pagado_clp": 281651395,
       "total_pagado_uf": 7095.9,
-      "n_facturas": 13,
+      "n_facturas": 16,
       "n_transferencias": 22,
-      "total_neto_clp": 225628367,
-      "total_iva_clp": 42869389,
-      "total_con_iva_clp": 268497756,
+      "total_neto_clp": 251686456,
+      "total_iva_clp": 47820466,
+      "total_con_iva_clp": 299506882,
       "n_notas_credito": 1
     },
     "movimientos": [
